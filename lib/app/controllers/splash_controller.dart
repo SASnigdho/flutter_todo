@@ -1,7 +1,3 @@
+import 'base_controller.dart';
 
-import 'package:get/get.dart';
-
-class SplashController extends GetxController {
-
-}
-  
+class SplashController extends BaseController {}

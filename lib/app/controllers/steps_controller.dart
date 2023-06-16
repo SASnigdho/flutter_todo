@@ -1,7 +1,3 @@
+import 'base_controller.dart';
 
-import 'package:get/get.dart';
-
-class StepsController extends GetxController {
-
-}
-  
+class StepsController extends BaseController {}
