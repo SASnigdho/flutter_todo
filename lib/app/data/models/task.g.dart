@@ -126,7 +126,7 @@ Task _taskDeserialize(
     createdAt: reader.readStringOrNull(offsets[0]),
     descriptions: reader.readStringOrNull(offsets[1]),
     id: id,
-    isCompleted: reader.readBoolOrNull(offsets[2]),
+    isCompleted: reader.readBoolOrNull(offsets[2]) ?? false,
     order: reader.readLongOrNull(offsets[3]),
     title: reader.readStringOrNull(offsets[4]),
     updatedAt: reader.readStringOrNull(offsets[5]),
@@ -146,7 +146,7 @@ P _taskDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 3:
       return (reader.readLongOrNull(offset)) as P;
     case 4:
@@ -607,24 +607,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> isCompletedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'isCompleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> isCompletedIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isCompleted',
-      ));
-    });
-  }
-
   QueryBuilder<Task, Task, QAfterFilterCondition> isCompletedEqualTo(
-      bool? value) {
+      bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isCompleted',
@@ -1272,7 +1256,7 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Task, bool?, QQueryOperations> isCompletedProperty() {
+  QueryBuilder<Task, bool, QQueryOperations> isCompletedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isCompleted');
     });
@@ -1305,7 +1289,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as int?,
       order: json['order'] as int?,
       title: json['title'] as String?,
-      isCompleted: json['is_completed'] as bool?,
+      isCompleted: json['is_completed'] as bool? ?? false,
       descriptions: json['descriptions'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,

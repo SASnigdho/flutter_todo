@@ -125,7 +125,7 @@ Step _stepDeserialize(
     createdAt: reader.readStringOrNull(offsets[0]),
     descriptions: reader.readStringOrNull(offsets[1]),
     id: id,
-    isCompleted: reader.readBoolOrNull(offsets[2]),
+    isCompleted: reader.readBoolOrNull(offsets[2]) ?? false,
     order: reader.readLongOrNull(offsets[3]),
     taskId: reader.readLongOrNull(offsets[4]),
     text: reader.readStringOrNull(offsets[5]),
@@ -146,7 +146,7 @@ P _stepDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 3:
       return (reader.readLongOrNull(offset)) as P;
     case 4:
@@ -608,24 +608,8 @@ extension StepQueryFilter on QueryBuilder<Step, Step, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Step, Step, QAfterFilterCondition> isCompletedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'isCompleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> isCompletedIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isCompleted',
-      ));
-    });
-  }
-
   QueryBuilder<Step, Step, QAfterFilterCondition> isCompletedEqualTo(
-      bool? value) {
+      bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isCompleted',
@@ -1316,7 +1300,7 @@ extension StepQueryProperty on QueryBuilder<Step, Step, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Step, bool?, QQueryOperations> isCompletedProperty() {
+  QueryBuilder<Step, bool, QQueryOperations> isCompletedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isCompleted');
     });
@@ -1356,7 +1340,7 @@ Step _$StepFromJson(Map<String, dynamic> json) => Step(
       taskId: json['task_id'] as int?,
       order: json['order'] as int?,
       text: json['text'] as String?,
-      isCompleted: json['is_completed'] as bool?,
+      isCompleted: json['is_completed'] as bool? ?? false,
       descriptions: json['descriptions'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,

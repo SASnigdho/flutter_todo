@@ -12,7 +12,7 @@ class Step {
   int? order;
   String? text;
   @JsonKey(name: 'is_completed')
-  bool? isCompleted;
+  bool isCompleted;
   String? descriptions;
   @JsonKey(name: 'created_at')
   String? createdAt;
@@ -24,7 +24,7 @@ class Step {
     this.taskId,
     this.order,
     this.text,
-    this.isCompleted,
+    this.isCompleted = false,
     this.descriptions,
     this.createdAt,
     this.updatedAt,

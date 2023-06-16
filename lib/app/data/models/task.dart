@@ -11,7 +11,7 @@ class Task {
   int? order;
   String? title;
   @JsonKey(name: 'is_completed')
-  bool? isCompleted;
+  bool isCompleted;
   String? descriptions;
   final steps = IsarLinks<Step>();
   @JsonKey(name: 'created_at')
@@ -23,7 +23,7 @@ class Task {
     this.id,
     this.order,
     this.title,
-    this.isCompleted,
+    this.isCompleted = false,
     this.descriptions,
     this.createdAt,
     this.updatedAt,
