@@ -8,10 +8,17 @@ class SplashPage extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.primary,
       body: SafeArea(
-        child: Center(child: Text('TODO')),
+        child: Center(
+            child: Text(
+          'TODO',
+          style: Get.textTheme.headlineSmall?.copyWith(
+            color: AppColors.lightBg,
+            fontWeight: FontWeight.bold,
+          ),
+        )),
       ),
     );
   }
