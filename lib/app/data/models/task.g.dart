@@ -127,7 +127,7 @@ Task _taskDeserialize(
     descriptions: reader.readStringOrNull(offsets[1]),
     id: id,
     isCompleted: reader.readBoolOrNull(offsets[2]) ?? false,
-    order: reader.readLongOrNull(offsets[3]),
+    order: reader.readLongOrNull(offsets[3]) ?? 0,
     title: reader.readStringOrNull(offsets[4]),
     updatedAt: reader.readStringOrNull(offsets[5]),
   );
@@ -148,7 +148,7 @@ P _taskDeserializeProp<P>(
     case 2:
       return (reader.readBoolOrNull(offset) ?? false) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset) ?? 0) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -617,23 +617,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> orderIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'order',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> orderIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'order',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> orderEqualTo(int? value) {
+  QueryBuilder<Task, Task, QAfterFilterCondition> orderEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'order',
@@ -643,7 +627,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> orderGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -656,7 +640,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> orderLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -669,8 +653,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> orderBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1262,7 +1246,7 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Task, int?, QQueryOperations> orderProperty() {
+  QueryBuilder<Task, int, QQueryOperations> orderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'order');
     });
@@ -1287,7 +1271,7 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as int?,
-      order: json['order'] as int?,
+      order: json['order'] as int? ?? 0,
       title: json['title'] as String?,
       isCompleted: json['is_completed'] as bool? ?? false,
       descriptions: json['descriptions'] as String?,

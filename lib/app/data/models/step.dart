@@ -7,9 +7,7 @@ part 'step.g.dart';
 @collection
 class Step {
   Id? id = Isar.autoIncrement;
-  @JsonKey(name: 'task_id')
-  int? taskId;
-  int? order;
+  int order;
   String? text;
   @JsonKey(name: 'is_completed')
   bool isCompleted;
@@ -21,8 +19,7 @@ class Step {
 
   Step({
     this.id,
-    this.taskId,
-    this.order,
+    this.order = 0,
     this.text,
     this.isCompleted = false,
     this.descriptions,

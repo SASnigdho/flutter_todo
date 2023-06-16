@@ -37,18 +37,13 @@ const StepSchema = CollectionSchema(
       name: r'order',
       type: IsarType.long,
     ),
-    r'taskId': PropertySchema(
-      id: 4,
-      name: r'taskId',
-      type: IsarType.long,
-    ),
     r'text': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'text',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'updatedAt',
       type: IsarType.string,
     )
@@ -110,9 +105,8 @@ void _stepSerialize(
   writer.writeString(offsets[1], object.descriptions);
   writer.writeBool(offsets[2], object.isCompleted);
   writer.writeLong(offsets[3], object.order);
-  writer.writeLong(offsets[4], object.taskId);
-  writer.writeString(offsets[5], object.text);
-  writer.writeString(offsets[6], object.updatedAt);
+  writer.writeString(offsets[4], object.text);
+  writer.writeString(offsets[5], object.updatedAt);
 }
 
 Step _stepDeserialize(
@@ -126,10 +120,9 @@ Step _stepDeserialize(
     descriptions: reader.readStringOrNull(offsets[1]),
     id: id,
     isCompleted: reader.readBoolOrNull(offsets[2]) ?? false,
-    order: reader.readLongOrNull(offsets[3]),
-    taskId: reader.readLongOrNull(offsets[4]),
-    text: reader.readStringOrNull(offsets[5]),
-    updatedAt: reader.readStringOrNull(offsets[6]),
+    order: reader.readLongOrNull(offsets[3]) ?? 0,
+    text: reader.readStringOrNull(offsets[4]),
+    updatedAt: reader.readStringOrNull(offsets[5]),
   );
   return object;
 }
@@ -148,12 +141,10 @@ P _stepDeserializeProp<P>(
     case 2:
       return (reader.readBoolOrNull(offset) ?? false) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset) ?? 0) as P;
     case 4:
-      return (reader.readLongOrNull(offset)) as P;
-    case 5:
       return (reader.readStringOrNull(offset)) as P;
-    case 6:
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -618,23 +609,7 @@ extension StepQueryFilter on QueryBuilder<Step, Step, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Step, Step, QAfterFilterCondition> orderIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'order',
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> orderIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'order',
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> orderEqualTo(int? value) {
+  QueryBuilder<Step, Step, QAfterFilterCondition> orderEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'order',
@@ -644,7 +619,7 @@ extension StepQueryFilter on QueryBuilder<Step, Step, QFilterCondition> {
   }
 
   QueryBuilder<Step, Step, QAfterFilterCondition> orderGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -657,7 +632,7 @@ extension StepQueryFilter on QueryBuilder<Step, Step, QFilterCondition> {
   }
 
   QueryBuilder<Step, Step, QAfterFilterCondition> orderLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -670,82 +645,14 @@ extension StepQueryFilter on QueryBuilder<Step, Step, QFilterCondition> {
   }
 
   QueryBuilder<Step, Step, QAfterFilterCondition> orderBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'order',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'taskId',
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'taskId',
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'taskId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'taskId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'taskId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterFilterCondition> taskIdBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'taskId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1098,18 +1005,6 @@ extension StepQuerySortBy on QueryBuilder<Step, Step, QSortBy> {
     });
   }
 
-  QueryBuilder<Step, Step, QAfterSortBy> sortByTaskId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'taskId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterSortBy> sortByTaskIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'taskId', Sort.desc);
-    });
-  }
-
   QueryBuilder<Step, Step, QAfterSortBy> sortByText() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'text', Sort.asc);
@@ -1196,18 +1091,6 @@ extension StepQuerySortThenBy on QueryBuilder<Step, Step, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Step, Step, QAfterSortBy> thenByTaskId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'taskId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Step, Step, QAfterSortBy> thenByTaskIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'taskId', Sort.desc);
-    });
-  }
-
   QueryBuilder<Step, Step, QAfterSortBy> thenByText() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'text', Sort.asc);
@@ -1260,12 +1143,6 @@ extension StepQueryWhereDistinct on QueryBuilder<Step, Step, QDistinct> {
     });
   }
 
-  QueryBuilder<Step, Step, QDistinct> distinctByTaskId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'taskId');
-    });
-  }
-
   QueryBuilder<Step, Step, QDistinct> distinctByText(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1306,15 +1183,9 @@ extension StepQueryProperty on QueryBuilder<Step, Step, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Step, int?, QQueryOperations> orderProperty() {
+  QueryBuilder<Step, int, QQueryOperations> orderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'order');
-    });
-  }
-
-  QueryBuilder<Step, int?, QQueryOperations> taskIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'taskId');
     });
   }
 
@@ -1337,8 +1208,7 @@ extension StepQueryProperty on QueryBuilder<Step, Step, QQueryProperty> {
 
 Step _$StepFromJson(Map<String, dynamic> json) => Step(
       id: json['id'] as int?,
-      taskId: json['task_id'] as int?,
-      order: json['order'] as int?,
+      order: json['order'] as int? ?? 0,
       text: json['text'] as String?,
       isCompleted: json['is_completed'] as bool? ?? false,
       descriptions: json['descriptions'] as String?,
@@ -1348,7 +1218,6 @@ Step _$StepFromJson(Map<String, dynamic> json) => Step(
 
 Map<String, dynamic> _$StepToJson(Step instance) => <String, dynamic>{
       'id': instance.id,
-      'task_id': instance.taskId,
       'order': instance.order,
       'text': instance.text,
       'is_completed': instance.isCompleted,
