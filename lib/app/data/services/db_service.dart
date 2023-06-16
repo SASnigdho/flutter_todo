@@ -1,3 +1,7 @@
+// ignore_for_file: override_on_non_overriding_member
+
+import 'dart:developer';
+
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,5 +30,55 @@ class DbService implements IDbService {
     }
 
     return Future.value(Isar.getInstance(dbName));
+  }
+
+  @override
+  Future<List<Task>> getTasks() async {
+    final tasks = <Task>[];
+
+    try {
+      final isar = await _db;
+      tasks.addAll(await isar.tasks.where().findAll());
+
+      return tasks;
+    } catch (e) {
+      log('DbService:: getTasks@ $e');
+    }
+
+    return tasks;
+  }
+
+  @override
+  Future<void> save(Task task) async {
+    try {
+      final isar = await _db;
+
+      await isar.writeTxn(() async => await isar.tasks.put(task));
+    } catch (e) {
+      log('DbService:: save@ $e');
+    }
+  }
+
+  @override
+  Future<Task?> get(int id) async {
+    try {
+      final isar = await _db;
+      final task = await isar.tasks.filter().idEqualTo(id).findFirst();
+
+      return task;
+    } catch (e) {
+      log('DbService:: get@ $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<void> delete(Task task) async {
+    try {
+      final isar = await _db;
+      await isar.tasks.delete(task.id!);
+    } catch (e) {
+      log('DbService:: delete@ $e');
+    }
   }
 }
