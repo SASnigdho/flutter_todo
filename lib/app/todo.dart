@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'ui/pages/home_page/home_page.dart';
+
 class Todo extends StatelessWidget {
   const Todo({super.key});
 
@@ -11,9 +13,7 @@ class Todo extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-
-      // TODO:: Add home page Home page.
-      home: const Text('Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
