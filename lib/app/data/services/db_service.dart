@@ -13,7 +13,7 @@ class DbService implements IDbService {
   Future<Isar> openDB() async {
     const dbName = 'collections';
     final dir = await getApplicationDocumentsDirectory();
-    
+
     if (Isar.instanceNames.isEmpty) {
       return Isar.openSync(
         [
