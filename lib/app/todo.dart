@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import 'routes/app_pages.dart';
 import 'routes/route_names.dart';
-import 'ui/pages/home_page/home_page.dart';
+import 'ui/theme/light.dart';
 
 class Todo extends StatelessWidget {
   const Todo({super.key});
@@ -20,11 +20,7 @@ class Todo extends StatelessWidget {
       builder: (_, child) => child!,
       unknownRoute: AppPages.pages.first,
 
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+      theme: AppTheme.light,
     );
   }
 }
