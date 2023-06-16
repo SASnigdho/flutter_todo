@@ -57,7 +57,13 @@ class DbService implements IDbService {
     try {
       final isar = await _db;
 
-      await isar.writeTxn(() async => await isar.tasks.put(task));
+      await isar.writeTxn(() async {
+        final steps = task.steps.toList();
+        await isar.steps.putAll(steps);
+
+        await isar.tasks.put(task);
+        await task.steps.save();
+      });
     } catch (e) {
       log('DbService:: save@ $e');
     }
