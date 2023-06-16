@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:flutter_todo/app/data/contracts/i_repository.dart';
+import 'package:flutter_todo/app/data/contracts/i_task_repository.dart';
 import 'package:flutter_todo/app/data/models/task.dart';
 
 import 'repository.dart';
 
-class TaskRepository extends Repository implements IRepository {
+class TaskRepository extends Repository implements ITaskRepository {
   @override
   Future<void> delete(Task task) async {
     try {
