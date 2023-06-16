@@ -40,6 +40,10 @@ class DbService implements IDbService {
       final isar = await _db;
       tasks.addAll(await isar.tasks.where().findAll());
 
+      for (final task in tasks) {
+        await task.steps.load();
+      }
+
       return tasks;
     } catch (e) {
       log('DbService:: getTasks@ $e');
@@ -64,6 +68,7 @@ class DbService implements IDbService {
     try {
       final isar = await _db;
       final task = await isar.tasks.filter().idEqualTo(id).findFirst();
+      await task?.steps.load();
 
       return task;
     } catch (e) {
