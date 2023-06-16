@@ -1,4 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/app/bindings/splash_binding.dart';
 import 'package:get/get.dart';
 
 import 'routes/app_pages.dart';
