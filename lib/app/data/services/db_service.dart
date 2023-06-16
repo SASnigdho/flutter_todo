@@ -87,7 +87,16 @@ class DbService implements IDbService {
   Future<void> delete(Task task) async {
     try {
       final isar = await _db;
-      await isar.tasks.delete(task.id!);
+
+      await isar.writeTxn(() async {
+        await task.steps.load();
+
+        for (final step in task.steps) {
+          await isar.steps.delete(step.id!);
+        }
+
+        await isar.tasks.delete(task.id!);
+      });
     } catch (e) {
       log('DbService:: delete@ $e');
     }
