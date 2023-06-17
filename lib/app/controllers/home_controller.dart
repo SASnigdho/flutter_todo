@@ -11,7 +11,7 @@ class HomeController extends BaseController {
 
   final ITaskRepository repository;
 
-  final tasks = <Task>[];
+  final tasks = <Task>[].obs;
   final isLoading = false.obs;
 
   @override
@@ -42,6 +42,27 @@ class HomeController extends BaseController {
       await getsTasks();
     } catch (e) {
       log('HomeController:: deleteTask@ $e');
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> searchTask(String keyword) async {
+    final searchResult = <Task>[];
+    try {
+      for (var task in tasks) {
+        if (task.title!.contains(keyword)) {
+          searchResult.add(task);
+        }
+      }
+      tasks.clear();
+      tasks.addAll(searchResult);
+      tasks.refresh();
+
+      if (keyword.isEmpty) {
+        await getsTasks();
+      }
+    } catch (e) {
+      log('HomeController:: searchTask@ $e');
       isLoading.value = false;
     }
   }
