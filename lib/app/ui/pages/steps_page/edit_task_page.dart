@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controllers/steps_controller.dart';
+import '../../../controllers/edit_task_controller.dart';
 
-class StepsPage extends GetView<StepsController> {
-  const StepsPage({super.key});
+class EditTaskPage extends GetView<EditTaskController> {
+  const EditTaskPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,4 +3,5 @@ class RouteNames {
   static const unknown = '/404';
   static const home = '/home';
   static const create = '/create';
+  static const edit = '/edit';
 }
