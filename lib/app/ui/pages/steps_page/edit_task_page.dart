@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../const/app_colors.dart';
 import '../../../controllers/edit_task_controller.dart';
 import '../../../controllers/home_controller.dart';
 import '../../../data/models/task.dart';
+import '../../../data/models/task_step.dart';
 import 'widgets/step_list_item.dart';
 
 class EditTaskPage extends GetView<EditTaskController> {
@@ -93,6 +95,25 @@ class EditTaskPage extends GetView<EditTaskController> {
           ),
         ),
       ),
+
+      // FloatingActionButton
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await _stepDialog(
+            onConfirm: () {
+              if (_stepFormKey.currentState!.validate()) {
+                final newStep = TaskStep();
+                newStep.text = _stepCtrl.text;
+                controller.steps.add(newStep);
+
+                _stepCtrl.text = '';
+                Get.back();
+              }
+            },
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -100,7 +121,7 @@ class EditTaskPage extends GetView<EditTaskController> {
     try {
       controller.task.createdAt = DateTime.now().toIso8601String();
       controller.task.updatedAt = DateTime.now().toIso8601String();
-      
+
       controller.task.newSteps.addAll(controller.steps);
       await controller.saveTask(controller.task);
 
@@ -112,5 +133,35 @@ class EditTaskPage extends GetView<EditTaskController> {
     } catch (e) {
       log('EditTaskPage:: _onSave@ $e');
     }
+  }
+
+  Future<void> _stepDialog({
+    VoidCallback? onConfirm,
+    String title = 'Add new Step',
+  }) async {
+    await Get.defaultDialog(
+      title: title,
+      barrierDismissible: false,
+      content: Form(
+        key: _stepFormKey,
+        child: TextFormField(
+          controller: _stepCtrl,
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            labelText: 'Enter a step',
+          ),
+          validator: (v) {
+            if (v!.isEmpty) return 'Enter a step.';
+            return null;
+          },
+        ),
+      ),
+      cancel: TextButton(
+        onPressed: Get.back,
+        child: const Text('Cancel'),
+      ),
+      cancelTextColor: AppColors.red,
+      confirm: TextButton(onPressed: onConfirm, child: const Text('Add')),
+    );
   }
 }
