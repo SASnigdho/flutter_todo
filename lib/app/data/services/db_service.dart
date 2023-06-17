@@ -6,7 +6,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../contracts/I_db_service.dart';
-import '../models/step.dart';
+import '../models/task_step.dart';
 import '../models/task.dart';
 
 class DbService implements IDbService {
@@ -22,7 +22,7 @@ class DbService implements IDbService {
 
     if (Isar.instanceNames.isEmpty) {
       return Isar.openSync(
-        [TaskSchema, StepSchema],
+        [TaskSchema, TaskStepSchema],
         directory: dir.path,
         name: dbName,
         inspector: true,
@@ -59,7 +59,7 @@ class DbService implements IDbService {
 
       await isar.writeTxn(() async {
         final steps = task.steps.toList();
-        await isar.steps.putAll(steps);
+        await isar.taskSteps.putAll(steps);
 
         await isar.tasks.put(task);
         await task.steps.save();
@@ -92,7 +92,7 @@ class DbService implements IDbService {
         await task.steps.load();
 
         for (final step in task.steps) {
-          await isar.steps.delete(step.id!);
+          await isar.taskSteps.delete(step.id!);
         }
 
         await isar.tasks.delete(task.id!);
