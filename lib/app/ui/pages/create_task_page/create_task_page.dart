@@ -11,10 +11,11 @@ import '../../../data/models/task.dart';
 class CreateTaskPage extends GetView<CreateTaskController> {
   CreateTaskPage({super.key});
 
-  final _titleCtrl = TextEditingController();
-  final _stepCtrl = TextEditingController();
   final _taskFormKey = GlobalKey<FormState>();
   final _stepFormKey = GlobalKey<FormState>();
+
+  final _titleCtrl = TextEditingController();
+  final _stepCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
