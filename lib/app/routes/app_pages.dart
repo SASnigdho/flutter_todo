@@ -43,7 +43,6 @@ class AppPages {
       name: RouteNames.edit,
       binding: EditTaskBinding(),
       page: EditTaskPage.new,
-      arguments: Get.arguments,
       transition: _defaultTransition,
     ),
   ];
