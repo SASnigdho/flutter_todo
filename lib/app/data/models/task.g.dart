@@ -58,7 +58,7 @@ const TaskSchema = CollectionSchema(
     r'steps': LinkSchema(
       id: 8354827203384578295,
       name: r'steps',
-      target: r'Step',
+      target: r'TaskStep',
       single: false,
     )
   },
@@ -168,7 +168,7 @@ List<IsarLinkBase<dynamic>> _taskGetLinks(Task object) {
 
 void _taskAttach(IsarCollection<dynamic> col, Id id, Task object) {
   object.id = id;
-  object.steps.attach(col, col.isar.collection<Step>(), r'steps', id);
+  object.steps.attach(col, col.isar.collection<TaskStep>(), r'steps', id);
 }
 
 extension TaskQueryWhereSort on QueryBuilder<Task, Task, QWhere> {
@@ -963,7 +963,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
 extension TaskQueryObject on QueryBuilder<Task, Task, QFilterCondition> {}
 
 extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {
-  QueryBuilder<Task, Task, QAfterFilterCondition> steps(FilterQuery<Step> q) {
+  QueryBuilder<Task, Task, QAfterFilterCondition> steps(
+      FilterQuery<TaskStep> q) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'steps');
     });

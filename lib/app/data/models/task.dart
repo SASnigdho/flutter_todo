@@ -1,4 +1,4 @@
-import 'package:flutter_todo/app/data/models/step.dart';
+import 'package:flutter_todo/app/data/models/task_step.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,7 +13,7 @@ class Task {
   @JsonKey(name: 'is_completed')
   bool isCompleted;
   String? descriptions;
-  final steps = IsarLinks<Step>();
+  final steps = IsarLinks<TaskStep>();
   @JsonKey(name: 'created_at')
   String? createdAt;
   @JsonKey(name: 'updated_at')

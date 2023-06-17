@@ -1,11 +1,11 @@
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'step.g.dart';
+part 'task_step.g.dart';
 
 @JsonSerializable()
 @collection
-class Step {
+class TaskStep {
   Id? id = Isar.autoIncrement;
   int order;
   String? text;
@@ -17,7 +17,7 @@ class Step {
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
-  Step({
+  TaskStep({
     this.id,
     this.order = 0,
     this.text,
@@ -27,7 +27,8 @@ class Step {
     this.updatedAt,
   });
 
-  factory Step.fromJson(Map<String, dynamic> json) => _$StepFromJson(json);
+  factory TaskStep.fromJson(Map<String, dynamic> json) =>
+      _$TaskStepFromJson(json);
 
-  Map<String, dynamic> toJson() => _$StepToJson(this);
+  Map<String, dynamic> toJson() => _$TaskStepToJson(this);
 }
