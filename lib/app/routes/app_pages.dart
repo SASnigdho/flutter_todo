@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../bindings/create_task_binding.dart';
 import '../bindings/home_binding.dart';
 import '../bindings/splash_binding.dart';
-import '../bindings/steps_binding.dart';
+import '../ui/pages/create_task_page/create_task_page.dart';
 import '../ui/pages/home_page/home_page.dart';
 import '../ui/pages/splash_page/splash_page.dart';
-import '../ui/pages/steps_page/steps_page.dart';
 import 'route_names.dart';
 
 const _defaultTransition = Transition.native;
@@ -32,9 +32,9 @@ class AppPages {
       transition: _defaultTransition,
     ),
     GetPage(
-      name: RouteNames.steps,
-      binding: StepsBinding(),
-      page: StepsPage.new,
+      name: RouteNames.create,
+      binding: CreateTaskBinding(),
+      page: CreateTaskPage.new,
       transition: _defaultTransition,
     ),
   ];
