@@ -13,6 +13,8 @@ class Task {
   @JsonKey(name: 'is_completed')
   bool isCompleted;
   String? descriptions;
+  @ignore
+  final newSteps = <TaskStep>[];
   final steps = IsarLinks<TaskStep>();
   @JsonKey(name: 'created_at')
   String? createdAt;
