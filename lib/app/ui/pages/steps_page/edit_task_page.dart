@@ -59,7 +59,6 @@ class EditTaskPage extends GetView<EditTaskController> {
               ),
 
               //
-
               Expanded(
                 child: Obx(
                   () => ListView.separated(
@@ -99,12 +98,16 @@ class EditTaskPage extends GetView<EditTaskController> {
 
   Future<void> _onSave() async {
     try {
+      controller.task.createdAt = DateTime.now().toIso8601String();
+      controller.task.updatedAt = DateTime.now().toIso8601String();
+      
+      controller.task.newSteps.addAll(controller.steps);
       await controller.saveTask(controller.task);
 
       // Update home controller.
       final homeCtrl = Get.find<HomeController>();
       await homeCtrl.onInit();
-      
+
       Get.back();
     } catch (e) {
       log('EditTaskPage:: _onSave@ $e');
