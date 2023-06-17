@@ -36,6 +36,15 @@ class HomeController extends BaseController {
     }
   }
 
+  Future<void> updateTask(Task task) async {
+    try {
+      await repository.save(task);
+    } catch (e) {
+      log('HomeController:: updateTask@ $e');
+      isLoading.value = false;
+    }
+  }
+
   Future<void> deleteTask(Task task) async {
     try {
       await repository.delete(task);

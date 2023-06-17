@@ -42,8 +42,15 @@ class HomePage extends GetView<HomeController> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Checkbox(
-                                      value: true,
-                                      onChanged: (value) {},
+                                      value: task.isCompleted,
+                                      onChanged: (value) async {
+                                        controller.tasks
+                                            .toList()[i]
+                                            .isCompleted = value!;
+
+                                        controller.tasks.refresh();
+                                        await controller.updateTask(task);
+                                      },
                                     ),
                                     Expanded(
                                         child: Column(
