@@ -56,22 +56,49 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                     shrinkWrap: true,
                     itemBuilder: (context, i) {
                       final step = controller.steps.toList()[i];
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: step.isCompleted,
-                                onChanged: (value) {
-                                  controller.steps.toList()[i].isCompleted =
-                                      value!;
 
+                      return Card(
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(10),
+                          onTap: () async {
+                            _stepCtrl.text = step.text ?? 'N/a';
+
+                            await _stepDialog(
+                              title: 'Edit Step',
+                              onConfirm: () {
+                                if (_stepFormKey.currentState!.validate()) {
+                                  controller.steps.toList()[i].text =
+                                      _stepCtrl.text;
+
+                                  Get.back();
+                                  _stepCtrl.text = '';
                                   controller.steps.refresh();
-                                },
-                              ),
-                              Text(step.text ?? 'Not Added'),
-                            ],
+                                }
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: step.isCompleted,
+                                  onChanged: (value) {
+                                    controller.steps.toList()[i].isCompleted =
+                                        value!;
+
+                                    controller.steps.refresh();
+                                  },
+                                ),
+                                Expanded(child: Text(step.text ?? 'Not Added')),
+                                CloseButton(
+                                  onPressed: () {
+                                    controller.steps.remove(step);
+                                    controller.steps.refresh();
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -89,45 +116,51 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       // FloatingActionButton
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Get.defaultDialog(
-            title: 'Add new Step',
-            barrierDismissible: true,
-            content: Form(
-              key: _stepFormKey,
-              child: TextFormField(
-                controller: _stepCtrl,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter a step',
-                ),
-                validator: (v) {
-                  if (v!.isEmpty) return 'Enter a step.';
-                  return null;
-                },
-              ),
-            ),
-            cancel: TextButton(
-              onPressed: Get.back,
-              child: const Text('Cancel'),
-            ),
-            cancelTextColor: AppColors.red,
-            confirm: TextButton(
-              onPressed: () {
-                if (_stepFormKey.currentState!.validate()) {
-                  final newStep = TaskStep();
-                  newStep.text = _stepCtrl.text;
-                  controller.steps.add(newStep);
+          await _stepDialog(
+            onConfirm: () {
+              if (_stepFormKey.currentState!.validate()) {
+                final newStep = TaskStep();
+                newStep.text = _stepCtrl.text;
+                controller.steps.add(newStep);
 
-                  Get.back();
-                  _stepCtrl.text = '';
-                }
-              },
-              child: const Text('Add'),
-            ),
+                Get.back();
+                _stepCtrl.text = '';
+              }
+            },
           );
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Future<void> _stepDialog({
+    VoidCallback? onConfirm,
+    String title = 'Add new Step',
+  }) async {
+    await Get.defaultDialog(
+      title: title,
+      barrierDismissible: false,
+      content: Form(
+        key: _stepFormKey,
+        child: TextFormField(
+          controller: _stepCtrl,
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            labelText: 'Enter a step',
+          ),
+          validator: (v) {
+            if (v!.isEmpty) return 'Enter a step.';
+            return null;
+          },
+        ),
+      ),
+      cancel: TextButton(
+        onPressed: Get.back,
+        child: const Text('Cancel'),
+      ),
+      cancelTextColor: AppColors.red,
+      confirm: TextButton(onPressed: onConfirm, child: const Text('Add')),
     );
   }
 
