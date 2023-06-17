@@ -70,8 +70,21 @@ class EditTaskPage extends GetView<EditTaskController> {
 
                       return StepListItem(
                         step: step,
-                        onTap: () {
-                          // TODO:: Open Edit Dialog.
+                        onTap: () async {
+                          _stepCtrl.text = step.text ?? 'N/a';
+
+                          await _stepDialog(
+                            title: 'Edit Step',
+                            onConfirm: () {
+                              if (_stepFormKey.currentState!.validate()) {
+                                controller.steps[i].text = _stepCtrl.text;
+
+                                _stepCtrl.text = '';
+                                controller.steps.refresh();
+                                Get.back();
+                              }
+                            },
+                          );
                         },
                         onDelete: () {
                           controller.task.steps.remove(step);
