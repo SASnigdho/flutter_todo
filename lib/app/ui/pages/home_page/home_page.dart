@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo/app/routes/route_names.dart';
 import 'package:get/get.dart';
 import '../../../controllers/home_controller.dart';
+import 'widgets/home_list_item.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -35,44 +36,17 @@ class HomePage extends GetView<HomeController> {
                           itemBuilder: (context, i) {
                             final task = controller.tasks.toList()[i];
 
-                            return Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Checkbox(
-                                      value: task.isCompleted,
-                                      onChanged: (value) async {
-                                        controller.tasks
-                                            .toList()[i]
-                                            .isCompleted = value!;
+                            return HomeListItem(
+                              task: task,
+                              onChanged: (value) async {
+                                controller.tasks.toList()[i].isCompleted =
+                                    value!;
 
-                                        controller.tasks.refresh();
-                                        await controller.updateTask(task);
-                                      },
-                                    ),
-                                    Expanded(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${task.title}',
-                                            textAlign: TextAlign.left),
-                                        Text(
-                                          'Total Steps: ${task.steps.length}',
-                                          style: Get.textTheme.labelSmall,
-                                        ),
-                                      ],
-                                    )),
-                                    CloseButton(
-                                      onPressed: () async {
-                                        await controller.deleteTask(task);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                controller.tasks.refresh();
+                                await controller.updateTask(task);
+                              },
+                              onDelete: () async =>
+                                  await controller.deleteTask(task),
                             );
                           },
                           separatorBuilder: (context, index) =>
