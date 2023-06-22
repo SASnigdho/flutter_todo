@@ -1,6 +1,17 @@
 # flutter_todo
 
-A new Flutter project.
+A new Flutter todo project.
+
+Pages:: 1. Home page, Task edit page and Task Create page.
+
+Features:: 
+    1. User can search all task.
+    2. User can create task.
+    2. Ever task has dome steps to done.
+    4. User can update a task and its steps too.
+    5. All tasks save in database instantly so if user close the app data still remains the same.
+    6. User can dele a task and its steps too.
+
 
 ## Getting Started
 
